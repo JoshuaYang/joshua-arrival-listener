@@ -1,72 +1,32 @@
-# Platform
+# ArrivalListener
 
-Will add checked classes to html tag automatic.
-
-If match the platform, will return `true`, and add the class name below.
-
-if not match the platform, will return `false`, and add the class name `not-{className}` or `no-touch`.
+adjust whether element reach / leave the edge of viewport. Also can set offset.
 
 
 
-## usage
-
-### css
-
-```scss
-.desktop{
-  // style for desktop platform
-}
-
-.ie11{
-  // style for IE11 platform
-}
-
-.iphone{
-  // style for iPhone platform
-}
-```
-
-### js
+## **initialize**
 
 ```javascript
-import Platform from 'joshua-platform';
-
-if(Platform.isIE) {
-  // do something on IE
-}
-
-if(Platform.isiPad) {
-  // do something on iPad
-}
+new ArrivalListener({
+  // options
+});
 ```
 
 
 
+## **options**
 
-
-| static property | class name    | desktop                |
-| --------------- | ------------- | ---------------------- |
-| isDesktop       | desktop       | desktop browser        |
-| isIE            | ie            | IE brwoser             |
-| isIE11          | ie11          | IE11 brwoser           |
-| isEdge          | edge          | Edge brwoser           |
-| isChrome        | chrome        | Chrome brwoser         |
-| isFirefox       | firefox       | Firefox brwoser        |
-| isSafari        | safari        | Safari brwoser         |
-| isSamsungNative | samsungnative | samsung native brwoser |
-| isTablet        | tablet        | tablet device          |
-| isiPad          | ipad          | iPad device            |
-| isAndroidPad    | androidpad    | Android tablet device  |
-| isNexus7        | nexus7        | Google Nexus7 device   |
-| isMobile        | mobile        | mobile device          |
-| isiPhone        | iphone        | iPhone device          |
-| isS4            | s4            | samsung S4 device      |
-| isS5            | s5            | samsungS5 device       |
-| isS6            | s6            | samsungS6 device       |
-| isS7            | s7            | samsungS7 device       |
-| isIOS           | ios           | IOS device             |
-| isAndroid       | android       | Android device         |
-| hasTouch        | has-touch     | touch screen device    |
-| isMac           | mac           | mac os system          |
-| isWindows       | windows       | windows system         |
-
+| 参数                      | 类型         | 默认值  | 描述                                       |
+| ----------------------- | ---------- | ---- | ---------------------------------------- |
+| el                      | dom        | null | element need to listen to (**necessary**) |
+| offsetTopEnterBottom    | number（px） | 0    | offset when element's top enter viewport's bottom |
+| offsetTopLeaveBottom    | number（px） | 0    | offset when element's top leave viewport's bottom |
+| offsetBottomReachTop    | number（px） | 0    | offset when element's bottom enter / leave viewport's top |
+| offsetBottomEnterBottom | number（px） | 0    | offset when element's bottom enter viewport's bottom |
+| offsetBottomLeaveBottom | number（px） | 0    | offset when element's bottom leave viewport's bottom |
+| onTopEnterBottom        | number（px） | 0    | trigger when element's top enter viewport's bottom |
+| onTopLeaveBottom        | function   | null | trigger when element's top leave viewport's bottom |
+| onBottomEnterTop        | function   | null | trigger when element's bottom enter viewport's top |
+| onBottomLeaveTop        | function   | null | trigger when element's bottom leave viewport's top |
+| onBottomEnterBottom     | function   | null | trigger when element's bottom enter viewport's bottom |
+| onBottomLeaveBottom     | function   | null | trigger when element's bottom leave viewport's bottom |
