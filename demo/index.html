@@ -7,12 +7,73 @@
     <meta name="format-detection" content="telephone=no"/>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <title>Index</title>
+    <style>
+    .dv{
+        font-size: 30px;
+        text-align: center;
+        transition: background-color 0.3s ease;
+    }
+    .dv1{
+        height: 100vh;
+        background-color: #53D8FB;
+    }
+    .dv2{
+        height: 50vw;
+        line-height: 50vw;
+        background-color: #66C3FF;
+    }
+    .dv3{
+        height: 600px;
+        background-color: #DCE1E9;
+    }
+    .dv4{
+        height: 800px;
+        background-color: #D4AFB9;
+    }
+
+    .active{
+        background-color: #DB5375;
+    }
+    </style>
 </head>
 <body>
+    <div class="dv dv1" id="dv1"></div>
+    <div class="dv dv2" id="dv2">EntranceListener Target</div>
+    <div class="dv dv3" id="dv3"></div>
+    <div class="dv dv4" id="dv4"></div>
 
     <script src="../build/index.js"></script>
     <script>
-    console.log(ArrivalListener);
+    var al = new ArrivalListener({
+        el: document.getElementById('dv2'),
+        offsetTopEnterBottom: 500,
+        offsetTopLeaveBottom: 100,
+        offsetBottomReachTop: -100,
+        offsetBottomEnterBottom: 200,
+        offsetBottomLeaveBottom: 100,
+        onTopEnterBottom() {
+            console.log('==========onTopEnterBottom1');
+            this.classList.add('active');
+        },
+        onTopLeaveBottom() {
+            console.log('==========onTopLeaveBottom1');
+            this.classList.remove('active');
+        },
+        onBottomEnterTop() {
+            console.log('==========onBottomEnterTop1');
+        },
+        onBottomLeaveTop() {
+            console.log('==========onBottomLeaveTop1');
+        },
+        onBottomEnterBottom() {
+            console.log('==========onBottomEnterBottom1');
+        },
+        onBottomLeaveBottom() {
+            console.log('==========onBottomLeaveBottom1');
+        },
+    });
+
+    console.log(al);
     </script>
 </body>
 </html>

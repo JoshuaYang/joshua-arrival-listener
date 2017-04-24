@@ -1,7 +1,7 @@
 export default class {
-    flagTopReachBottom = false;
-    flagBottomReachTop = false;
-    flagBottomReachBottom = false;
+    // flagTopReachBottom = false;
+    // flagBottomReachTop = false;
+    // flagBottomReachBottom = false;
 
     offsetTopEnterBottom = 0;
     offsetTopLeaveBottom = 0;
@@ -21,20 +21,20 @@ export default class {
             this[key] = options[key];
         }
 
+        this.entranceHandler(true);
+
         window.addEventListener('scroll', this.entranceHandler.bind(this));
         window.addEventListener('resize', this.entranceHandler.bind(this));
-
-        this.entranceHandler();
     }
 
-    entranceHandler() {
+    entranceHandler(isFirstTime) {
         const innerHeight = window.innerHeight;
         const rect = this.el.getBoundingClientRect();
 
-        this.adjustEdge(innerHeight, rect);
+        this.adjustEdge(innerHeight, rect, isFirstTime);
     }
 
-    adjustEdge(innerHeight, rect) {
+    adjustEdge(innerHeight, rect, isFirstTime) {
         const flagTopHigherThanBottom = rect.top + this.offsetTopEnterBottom <= innerHeight;
         const flagTopLowerThanBottom = rect.top + this.offsetTopLeaveBottom > innerHeight;
 
@@ -44,6 +44,17 @@ export default class {
         const flagBottomHigherThanBottom = rect.bottom + this.offsetBottomEnterBottom
                                             <= innerHeight;
         const flagBottomLowerThanBottom = rect.bottom + this.offsetBottomLeaveBottom > innerHeight;
+
+        if (isFirstTime) {
+            if (flagTopHigherThanBottom) this.onTopEnterBottom.call(this.el);
+            if (flagTopLowerThanBottom) this.onTopLeaveBottom.call(this.el);
+
+            if (flagBottomHigherThanTop) this.onBottomLeaveTop.call(this.el);
+            if (flagBottomLowerThanTop) this.onBottomEnterTop.call(this.el);
+
+            if (flagBottomHigherThanBottom) this.onBottomEnterBottom.call(this.el);
+            if (flagBottomLowerThanBottom) this.onBottomLeaveBottom.call(this.el);
+        }
 
         // top enter bottom
         if (flagTopHigherThanBottom && !this.flagTopReachBottom) {
