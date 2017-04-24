@@ -45,7 +45,7 @@ export default class {
                                             <= innerHeight;
         const flagBottomLowerThanBottom = rect.bottom + this.offsetBottomLeaveBottom > innerHeight;
 
-        if (isFirstTime) {
+        if (isFirstTime === true) {
             if (flagTopHigherThanBottom) this.onTopEnterBottom.call(this.el);
             if (flagTopLowerThanBottom) this.onTopLeaveBottom.call(this.el);
 
