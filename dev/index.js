@@ -33,8 +33,6 @@ export default class {
         const transform = getComputedStyle(this.el).transform;
         const transformArr = this.parseTransform(transform);
 
-        console.log('==========', transformArr[5] || 0);
-
         const rectCopy = {
             top: rect.top - (transformArr[5] || 0),
             bottom: rect.bottom,
@@ -47,68 +45,71 @@ export default class {
         this.adjustEdge(innerHeight, rectCopy, isFirstTime);
     }
 
+    computeFlag(innerHeight, rect) {
+        return {
+            topHigherThanBottom: rect.top + this.offsetTopEnterBottom <= innerHeight,
+            topLowerThanBottom: rect.top + this.offsetTopLeaveBottom > innerHeight,
+
+            bottomHigherThanTop: rect.bottom + this.offsetBottomReachTop <= 0,
+            bottomLowerThanTop: rect.bottom + this.offsetBottomReachTop > 0,
+
+            bottomHigherThanBottom: rect.bottom + this.offsetBottomEnterBottom <= innerHeight,
+            bottomLowerThanBottom: rect.bottom + this.offsetBottomLeaveBottom > innerHeight,
+        };
+    }
+
     adjustEdge(innerHeight, rect, isFirstTime) {
-        const flagTopHigherThanBottom = rect.top + this.offsetTopEnterBottom <= innerHeight;
-        const flagTopLowerThanBottom = rect.top + this.offsetTopLeaveBottom > innerHeight;
-
-        const flagBottomHigherThanTop = rect.bottom + this.offsetBottomReachTop <= 0;
-        const flagBottomLowerThanTop = rect.bottom + this.offsetBottomReachTop > 0;
-
-        const flagBottomHigherThanBottom = rect.bottom + this.offsetBottomEnterBottom
-                                            <= innerHeight;
-        const flagBottomLowerThanBottom = rect.bottom + this.offsetBottomLeaveBottom
-                                            > innerHeight;
+        const flag = this.computeFlag(innerHeight, rect);
 
         if (isFirstTime === true) {
-            if (flagTopHigherThanBottom) this.onTopEnterBottom.call(this.el);
-            if (flagTopLowerThanBottom) this.onTopLeaveBottom.call(this.el);
+            if (flag.topHigherThanBottom) this.onTopEnterBottom.call(this.el);
+            if (flag.topLowerThanBottom) this.onTopLeaveBottom.call(this.el);
 
-            if (flagBottomHigherThanTop) this.onBottomLeaveTop.call(this.el);
-            if (flagBottomLowerThanTop) this.onBottomEnterTop.call(this.el);
+            if (flag.bottomHigherThanTop) this.onBottomLeaveTop.call(this.el);
+            if (flag.bottomLowerThanTop) this.onBottomEnterTop.call(this.el);
 
-            if (flagBottomHigherThanBottom) this.onBottomEnterBottom.call(this.el);
-            if (flagBottomLowerThanBottom) this.onBottomLeaveBottom.call(this.el);
+            if (flag.bottomHigherThanBottom) this.onBottomEnterBottom.call(this.el);
+            if (flag.bottomLowerThanBottom) this.onBottomLeaveBottom.call(this.el);
         }
 
         // top enter bottom
-        if (flagTopHigherThanBottom && !this.flagTopReachBottom) {
+        if (flag.topHigherThanBottom && !this.flagTopReachBottom) {
             this.flagTopReachBottom = true;
             this.onTopEnterBottom.call(this.el);
         }
 
         // top leave bottom
-        if (flagTopLowerThanBottom && this.flagTopReachBottom) {
+        if (flag.topLowerThanBottom && this.flagTopReachBottom) {
             this.flagTopReachBottom = false;
             this.onTopLeaveBottom.call(this.el);
         }
 
         // bottom leave top
-        if (flagBottomHigherThanTop && !this.flagBottomReachTop) {
+        if (flag.bottomHigherThanTop && !this.flagBottomReachTop) {
             this.flagBottomReachTop = true;
             this.onBottomLeaveTop.call(this.el);
         }
 
         // bottom enter top
-        if (flagBottomLowerThanTop && this.flagBottomReachTop) {
+        if (flag.bottomLowerThanTop && this.flagBottomReachTop) {
             this.flagBottomReachTop = false;
             this.onBottomEnterTop.call(this.el);
         }
 
         // bottom enter bottom
-        if (flagBottomHigherThanBottom && !this.flagBottomReachBottom) {
+        if (flag.bottomHigherThanBottom && !this.flagBottomReachBottom) {
             this.flagBottomReachBottom = true;
             this.onBottomEnterBottom.call(this.el);
         }
 
         // bottom leave bottom
-        if (flagBottomLowerThanBottom && this.flagBottomReachBottom) {
+        if (flag.bottomLowerThanBottom && this.flagBottomReachBottom) {
             this.flagBottomReachBottom = false;
             this.onBottomLeaveBottom.call(this.el);
         }
     }
 
     parseTransform(transform) {
-        // add sanity check
         return transform
                 .split(/\(|,|\)/)
                 .slice(1, -1)

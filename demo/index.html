@@ -21,7 +21,7 @@
         line-height: 50vw;
         background-color: #66C3FF;
 
-        /*transform: translateY(50px);*/
+        transform: translateY(50px);
         transition: transform 0.5s ease, background-color 0.5s ease;
     }
     .dv3{
@@ -34,7 +34,7 @@
     }
 
     .active{
-        /*transform: translateY(0px);*/
+        transform: translateY(0px);
         background-color: #DB5375;
     }
     </style>
@@ -50,10 +50,10 @@
     var al = new ArrivalListener({
         el: document.getElementById('dv2'),
         offsetTopEnterBottom: 100,
-        // offsetTopLeaveBottom: 100,
-        // offsetBottomReachTop: -100,
-        // offsetBottomEnterBottom: 200,
-        // offsetBottomLeaveBottom: 100,
+        offsetTopLeaveBottom: 100,
+        offsetBottomReachTop: -100,
+        offsetBottomEnterBottom: 200,
+        offsetBottomLeaveBottom: 100,
         onTopEnterBottom() {
             console.log('==========onTopEnterBottom1');
             this.classList.add('active');

@@ -55,7 +55,7 @@ module.exports = {
             sourceMap: true,
             compress: {
                 warnings: false,
-                // drop_console: true,
+                drop_console: true,
             },
         }),
     ],
