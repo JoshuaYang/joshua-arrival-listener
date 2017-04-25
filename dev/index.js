@@ -33,8 +33,10 @@ export default class {
         const transform = getComputedStyle(this.el).transform;
         const transformArr = this.parseTransform(transform);
 
+        console.log('==========', transformArr[5] || 0);
+
         const rectCopy = {
-            top: rect.top - transformArr[5],
+            top: rect.top - (transformArr[5] || 0),
             bottom: rect.bottom,
             left: rect.left,
             right: rect.right,
