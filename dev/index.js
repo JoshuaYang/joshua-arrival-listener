@@ -3,6 +3,9 @@ export default class {
     // flagBottomReachTop = false;
     // flagBottomReachBottom = false;
 
+    percentTop = 0;
+    percentBottom = 1;
+
     offsetTopEnterBottom = 0;
     offsetTopLeaveBottom = 0;
     offsetBottomReachTop = 0;
@@ -46,15 +49,18 @@ export default class {
     }
 
     computeFlag(innerHeight, rect) {
+        const bottomPos = innerHeight * this.percentBottom;
+        const topPos = innerHeight * this.percentTop;
+
         return {
-            topHigherThanBottom: rect.top + this.offsetTopEnterBottom <= innerHeight,
-            topLowerThanBottom: rect.top + this.offsetTopLeaveBottom > innerHeight,
+            topHigherThanBottom: rect.top + this.offsetTopEnterBottom <= bottomPos,
+            topLowerThanBottom: rect.top + this.offsetTopLeaveBottom > bottomPos,
 
-            bottomHigherThanTop: rect.bottom + this.offsetBottomReachTop <= 0,
-            bottomLowerThanTop: rect.bottom + this.offsetBottomReachTop > 0,
+            bottomHigherThanTop: rect.bottom + this.offsetBottomReachTop <= topPos,
+            bottomLowerThanTop: rect.bottom + this.offsetBottomReachTop > topPos,
 
-            bottomHigherThanBottom: rect.bottom + this.offsetBottomEnterBottom <= innerHeight,
-            bottomLowerThanBottom: rect.bottom + this.offsetBottomLeaveBottom > innerHeight,
+            bottomHigherThanBottom: rect.bottom + this.offsetBottomEnterBottom <= bottomPos,
+            bottomLowerThanBottom: rect.bottom + this.offsetBottomLeaveBottom > bottomPos,
         };
     }
 
