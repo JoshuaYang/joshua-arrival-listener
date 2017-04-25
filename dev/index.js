@@ -30,8 +30,19 @@ export default class {
     entranceHandler(isFirstTime) {
         const innerHeight = window.innerHeight;
         const rect = this.el.getBoundingClientRect();
+        const transform = getComputedStyle(this.el).transform;
+        const transformArr = this.parseTransform(transform);
 
-        this.adjustEdge(innerHeight, rect, isFirstTime);
+        const rectCopy = {
+            top: rect.top - transformArr[5],
+            bottom: rect.bottom,
+            left: rect.left,
+            right: rect.right,
+            width: rect.width,
+            height: rect.height,
+        };
+
+        this.adjustEdge(innerHeight, rectCopy, isFirstTime);
     }
 
     adjustEdge(innerHeight, rect, isFirstTime) {
@@ -43,7 +54,8 @@ export default class {
 
         const flagBottomHigherThanBottom = rect.bottom + this.offsetBottomEnterBottom
                                             <= innerHeight;
-        const flagBottomLowerThanBottom = rect.bottom + this.offsetBottomLeaveBottom > innerHeight;
+        const flagBottomLowerThanBottom = rect.bottom + this.offsetBottomLeaveBottom
+                                            > innerHeight;
 
         if (isFirstTime === true) {
             if (flagTopHigherThanBottom) this.onTopEnterBottom.call(this.el);
@@ -91,5 +103,13 @@ export default class {
             this.flagBottomReachBottom = false;
             this.onBottomLeaveBottom.call(this.el);
         }
+    }
+
+    parseTransform(transform) {
+        // add sanity check
+        return transform
+                .split(/\(|,|\)/)
+                .slice(1, -1)
+                .map(val => parseFloat(val));
     }
 }
