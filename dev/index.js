@@ -1,10 +1,23 @@
+const operators = {
+    '+': (num1, num2) => num1 + num2,
+    '-': (num1, num2) => num1 - num2,
+    '*': (num1, num2) => num1 * num2,
+    '/': (num1, num2) => num1 / num2,
+};
+
+function isDecimal(val) {
+    return 0 < val && val < 1;
+}
+
+function getOperator(val) {
+    return isDecimal(val) ? '*' : '-';
+}
+
+
 export default class {
     // flagTopReachBottom = false;
     // flagBottomReachTop = false;
     // flagBottomReachBottom = false;
-
-    percentTop = 0;
-    percentBottom = 1;
 
     offsetTopEnterBottom = 0;
     offsetTopLeaveBottom = 0;
@@ -49,18 +62,36 @@ export default class {
     }
 
     computeFlag(innerHeight, rect) {
-        const bottomPos = innerHeight * this.percentBottom;
-        const topPos = innerHeight * this.percentTop;
+        let operator;
+
+        const bottomHigherThanTop = rect.bottom + this.offsetBottomReachTop <= 0;
+        const bottomLowerThanTop = rect.bottom + this.offsetBottomReachTop > 0;
+
+        operator = getOperator(this.offsetTopEnterBottom);
+        const topHigherThanBottom
+            = rect.top <= operators[operator](innerHeight, this.offsetTopEnterBottom);
+
+        operator = getOperator(this.offsetTopLeaveBottom);
+        const topLowerThanBottom
+            = rect.top > operators[operator](innerHeight, this.offsetTopLeaveBottom);
+
+        operator = getOperator(this.offsetBottomEnterBottom);
+        const bottomHigherThanBottom
+            = rect.bottom <= operators[operator](innerHeight, this.offsetBottomEnterBottom);
+
+        operator = getOperator(this.offsetBottomLeaveBottom);
+        const bottomLowerThanBottom
+            = rect.bottom > operators[operator](innerHeight, this.offsetBottomLeaveBottom);
 
         return {
-            topHigherThanBottom: rect.top + this.offsetTopEnterBottom <= bottomPos,
-            topLowerThanBottom: rect.top + this.offsetTopLeaveBottom > bottomPos,
+            topHigherThanBottom,
+            topLowerThanBottom,
 
-            bottomHigherThanTop: rect.bottom + this.offsetBottomReachTop <= topPos,
-            bottomLowerThanTop: rect.bottom + this.offsetBottomReachTop > topPos,
+            bottomHigherThanTop,
+            bottomLowerThanTop,
 
-            bottomHigherThanBottom: rect.bottom + this.offsetBottomEnterBottom <= bottomPos,
-            bottomLowerThanBottom: rect.bottom + this.offsetBottomLeaveBottom > bottomPos,
+            bottomHigherThanBottom,
+            bottomLowerThanBottom,
         };
     }
 
