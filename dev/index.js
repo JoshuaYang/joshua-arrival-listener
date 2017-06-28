@@ -64,8 +64,9 @@ export default class {
     computeFlag(innerHeight, rect) {
         let operator;
 
-        const bottomHigherThanTop = rect.bottom + this.offsetBottomReachTop <= 0;
-        const bottomLowerThanTop = rect.bottom + this.offsetBottomReachTop > 0;
+        const offsetBottomReachTop = typeof this.offsetBottomReachTop === 'function' ? this.offsetBottomReachTop() : this.offsetBottomReachTop;
+        const bottomHigherThanTop = rect.bottom + offsetBottomReachTop <= 0;
+        const bottomLowerThanTop = rect.bottom + offsetBottomReachTop > 0;
 
         operator = getOperator(this.offsetTopEnterBottom);
         const topHigherThanBottom
