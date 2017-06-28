@@ -63,26 +63,36 @@ export default class {
 
     computeFlag(innerHeight, rect) {
         let operator;
+        const OFFSET = {
+            bottomReachTop: typeof this.offsetBottomReachTop === 'function' ? this.offsetBottomReachTop() : this.offsetBottomReachTop,
+            topEnterBottom: typeof this.offsetTopEnterBottom === 'function' ? this.offsetTopEnterBottom() : this.offsetTopEnterBottom,
+            topLeaveBottom: typeof this.offsetTopLeaveBottom === 'function' ? this.offsetTopLeaveBottom() : this.offsetTopLeaveBottom,
+            bottomEnterBottom: typeof this.offsetBottomEnterBottom === 'function' ? this.offsetBottomEnterBottom() : this.offsetBottomEnterBottom,
+            bottomLeaveBottom: typeof this.offsetBottomLeaveBottom === 'function' ? this.offsetBottomLeaveBottom() : this.offsetBottomLeaveBottom,
+        };
 
-        const offsetBottomReachTop = typeof this.offsetBottomReachTop === 'function' ? this.offsetBottomReachTop() : this.offsetBottomReachTop;
-        const bottomHigherThanTop = rect.bottom + offsetBottomReachTop <= 0;
-        const bottomLowerThanTop = rect.bottom + offsetBottomReachTop > 0;
+        const bottomHigherThanTop = rect.bottom + OFFSET.bottomReachTop <= 0;
+        const bottomLowerThanTop = rect.bottom + OFFSET.bottomReachTop > 0;
 
-        operator = getOperator(this.offsetTopEnterBottom);
+
+        operator = getOperator(OFFSET.topEnterBottom);
         const topHigherThanBottom
-            = rect.top <= operators[operator](innerHeight, this.offsetTopEnterBottom);
+            = rect.top <= operators[operator](innerHeight, OFFSET.topEnterBottom);
 
-        operator = getOperator(this.offsetTopLeaveBottom);
+
+        operator = getOperator(OFFSET.topLeaveBottom);
         const topLowerThanBottom
-            = rect.top > operators[operator](innerHeight, this.offsetTopLeaveBottom);
+            = rect.top > operators[operator](innerHeight, OFFSET.topLeaveBottom);
 
-        operator = getOperator(this.offsetBottomEnterBottom);
+
+        operator = getOperator(OFFSET.bottomEnterBottom);
         const bottomHigherThanBottom
-            = rect.bottom <= operators[operator](innerHeight, this.offsetBottomEnterBottom);
+            = rect.bottom <= operators[operator](innerHeight, OFFSET.bottomEnterBottom);
 
-        operator = getOperator(this.offsetBottomLeaveBottom);
+
+        operator = getOperator(OFFSET.bottomLeaveBottom);
         const bottomLowerThanBottom
-            = rect.bottom > operators[operator](innerHeight, this.offsetBottomLeaveBottom);
+            = rect.bottom > operators[operator](innerHeight, OFFSET.bottomLeaveBottom);
 
         return {
             topHigherThanBottom,

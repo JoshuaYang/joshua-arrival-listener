@@ -50,12 +50,14 @@
     <script>
     var al = new ArrivalListener({
         el: document.getElementById('dv2'),
-        offsetTopEnterBottom: 0.9,
+        offsetTopEnterBottom() {
+            return 100;
+        },
         offsetTopLeaveBottom: 0,
         offsetBottomReachTop() {
             return -window.innerHeight * 0.5;
         },
-        offsetBottomEnterBottom: 200,
+        offsetBottomEnterBottom: 100,
         offsetBottomLeaveBottom: 100,
         onTopEnterBottom() {
             console.log('==========onTopEnterBottom1');
