@@ -2,9 +2,6 @@ const path = require('path');
 const glob = require('glob');
 const webpack = require('webpack');
 
-
-const jsFiles = glob.sync('./dev/*.js');
-const entry = {};
 const eslintLoader = {
     loader: 'eslint-loader',
     options: {
@@ -13,12 +10,8 @@ const eslintLoader = {
     },
 };
 
-jsFiles.forEach((file, i) => {
-    entry[path.basename(file, '.js')] = file;
-});
-
 module.exports = {
-    entry,
+    entry: './dev/index.js',
     output: {
         path: path.join(process.cwd(), 'build'),
         filename: '[name].js',
